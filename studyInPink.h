@@ -323,24 +323,66 @@ string notebook3(string ntb3) {
     return getCode(matrix);
 }
 
-string generateListPasswords(string pwd1, string pwd2, string pwd3) {
-    // Complete this function to gain point
-    return "000000000";
+// Convert char to int
+int ctoi(char c) {
+    return c - '0';
 }
 
-bool chaseTaxi(
-    int arr[100][100],
-    string points,
-    string moves,
-    string& outTimes,
-    string& outCatchUps) {
-    // Complete this function to gain point
+// Generate password by adding two password
+string genPass(string password1, string password2) {
+    string password = "";
+    int carry = 0;
+
+    for (int i = 0; i < N; i++) {
+        int sum = ctoi(password1[i]) + ctoi(password2[i]) + carry;
+        password += to_string(sum % 10);
+        carry = sum / 10;
+    }
+
+    return password;
+}
+
+// Generate List Passwords
+string generateListPasswords(string pwd1, string pwd2, string pwd3) {
+    string password = pwd1 + "," + pwd2 + "," + pwd3 + ",";
+    password += (genPass(pwd1, pwd2) + "," + genPass(pwd1, pwd3) + "," + genPass(pwd2, pwd3)) + ",";
+    password += (genPass(genPass(pwd1, pwd2), pwd3) + "," + genPass(pwd1, genPass(pwd2, pwd3))) + ",";
+    password += (genPass(genPass(pwd1, pwd2), genPass(pwd1, pwd3)));
+
+    return password;
+}
+
+bool chaseTaxi(int arr[100][100], string points, string moves, string& outTimes, string& outCatchUps) {
     return false;
 }
 
 string enterLaptop(string tag, string message) {
-    // Complete this function to gain point
-    return "";
+    ifstream read(tag);
+    string line = "";
+
+    // Read the first line
+    getline(read, line);
+
+    // Get email
+    int start = line.find(" ") + 1;
+    string email = line.substr(start, line.back());
+
+    // Read the second line
+    getline(read, line);
+
+    // Get the number
+    start = line.find(" ") + 1;
+    int end = line.find(" ", start + 1);
+    int n3 = stoi(line.substr(start, end));
+
+    // Generate password
+    string password = email + ";";
+    for (int i = 0; i < n3; i++) {
+        password += message;
+    }
+
+    read.close();
+    return password;
 }
 
 ////////////////////////////////////////////////
